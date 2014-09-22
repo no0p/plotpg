@@ -1,0 +1,4 @@
+comment = 'functions to plot result sets with gnuplot'
+default_version = '1.0'
+module_pathname = '$libdir/plotpg'
+relocatable = true
