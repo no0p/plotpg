@@ -3,13 +3,16 @@
 #include "utils/builtins.h"
 #include "executor/spi.h"
 #include "lib/stringinfo.h"
+#include "tcop/utility.h"
 
 #include <stdio.h>
 #include <string.h>
 
+char* plot_output_mode;
 
 PG_MODULE_MAGIC;
 
+void _PG_init(void);
 Datum	sine(void);
 Datum plot(PG_FUNCTION_ARGS);
 Datum stdinput(void);
@@ -102,7 +105,13 @@ Datum plot(PG_FUNCTION_ARGS) {
 			appendStringInfoString(&databuf, "\n");
 		}
 	}
-	appendStringInfoString(&databuf, "e\" | gnuplot -e \"set terminal dumb; plot '-'\"");
+	appendStringInfoString(&databuf, "e\" | gnuplot -e \""               );
+	if (strcmp(plot_output_mode, "svg") == 0) {
+  	appendStringInfoString(&databuf, "set terminal svg;");
+	} else {
+		appendStringInfoString(&databuf, "set terminal dumb;");
+	}
+	appendStringInfoString(&databuf,  "plot '-'\"");
 	
 	elog(LOG, "%s", databuf.data);
 	pf = popen(databuf.data, "r");
@@ -130,5 +139,18 @@ Datum plot(PG_FUNCTION_ARGS) {
 	PG_RETURN_TEXT_P(cstring_to_text(resultbuf.data));
 }
 
+void _PG_init(void) {
 
+  /* Main database to connect to. */
+  DefineCustomStringVariable("plotpg.mode",
+                              "Plot output mode, recognized values: 'svg', 'dumb'",
+                              NULL,
+                              &plot_output_mode,
+                              "dumb",
+                              PGC_USERSET,
+                              0,
+                              NULL,
+                              NULL,
+                              NULL);
+}
 
