@@ -15,31 +15,10 @@ PG_MODULE_MAGIC;
 void _PG_init(void);
 Datum	sine(void);
 Datum plot(PG_FUNCTION_ARGS);
-Datum stdinput(void);
 
-PG_FUNCTION_INFO_V1(stdinput);
-Datum		stdinput(void) {
-	FILE *pf;
-	char buf[500];
-	char result[10000] = "";
-
-	pf = popen("echo \"1 1\ne\" | gnuplot -e \"set terminal dumb; plot '-'\"", "r");
-	
-	if(!pf){
-		strcpy(result, "error");
-	}
-  
-	while (fgets(buf, 500, pf) != NULL) {
-	  strcat(result, buf);
-  }
-    
-	if (pclose(pf) != 0) {
-		strcpy(result, "error failed to close");
-	}
-	
-	PG_RETURN_TEXT_P(cstring_to_text(result));
-}
-
+/*
+* A smoke test function.
+*/
 PG_FUNCTION_INFO_V1(sine);
 Datum		sine(void) {
 	FILE *pf;
@@ -63,6 +42,10 @@ Datum		sine(void) {
 	PG_RETURN_TEXT_P(cstring_to_text(result));
 }
 
+/*
+* Takes an SQL query in a string format, executes the query, and passes the results to plotpg.  
+*   Returns a plot in dumb or svg mode depending on the GUC.
+*/
 PG_FUNCTION_INFO_V1(plot);
 Datum plot(PG_FUNCTION_ARGS) {
 	int ret;
@@ -73,7 +56,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 	StringInfoData databuf;
 	SPITupleTable *coltuptable;
 	FILE *pf;
-	char buf[500];
+	char buf[5000];
 	char *sql = text_to_cstring(PG_GETARG_TEXT_PP(0));
 	int in_count = 0;
 	
@@ -86,9 +69,25 @@ Datum plot(PG_FUNCTION_ARGS) {
 	processed = SPI_processed;
 
 	/* If no qualifying tuples, fall out early */
-	if (ret != SPI_OK_SELECT || processed <= 0) {
+	if (ret != SPI_OK_SELECT) {
 		SPI_finish();
-		PG_RETURN_TEXT_P(cstring_to_text("Select statement failed or no results"));
+		ereport(ERROR,
+				(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+				 errmsg("Unable to execute select statement.")));
+	}
+	
+	if (processed <= 0) {
+		SPI_finish();
+		ereport(ERROR,
+				(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+				 errmsg("No results to plot.")));
+	}
+	
+	if (processed > 2000) {
+		SPI_finish();
+		ereport(ERROR,
+				(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+				 errmsg("Unable to plot more than ~ 2000 results.")));
 	}
 	
 	coltuptable = SPI_tuptable;
@@ -111,7 +110,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 	} else {
 		appendStringInfoString(&databuf, "set terminal dumb;");
 	}
-	appendStringInfoString(&databuf,  "plot '-'\"");
+	appendStringInfoString(&databuf,  "plot '-' with lines\"");
 	
 	elog(LOG, "%s", databuf.data);
 	pf = popen(databuf.data, "r");
