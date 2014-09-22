@@ -56,8 +56,9 @@ Datum plot(PG_FUNCTION_ARGS) {
 	StringInfoData databuf;
 	SPITupleTable *coltuptable;
 	FILE *pf;
-	char buf[5000];
+	char buf[5000]; //review \n behavior of gnuplot in svg mode to tune this.
 	char *sql = text_to_cstring(PG_GETARG_TEXT_PP(0));
+	char *gnuplot_cmds = text_to_cstring(PG_GETARG_TEXT_PP(1));
 	int in_count = 0;
 	
 	if ((ret = SPI_connect()) < 0) {
@@ -68,7 +69,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 	ret = SPI_execute(sql, true, 0);
 	processed = SPI_processed;
 
-	/* If no qualifying tuples, fall out early */
+	/* Check if everything looks ok */
 	if (ret != SPI_OK_SELECT) {
 		SPI_finish();
 		ereport(ERROR,
@@ -90,6 +91,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 				 errmsg("Unable to plot more than ~ 2000 results.")));
 	}
 	
+	/* Initialize buffers for the plotting command and result, then build command*/
 	coltuptable = SPI_tuptable;
 	initStringInfo(&resultbuf);
 	initStringInfo(&databuf);
@@ -104,15 +106,20 @@ Datum plot(PG_FUNCTION_ARGS) {
 			appendStringInfoString(&databuf, "\n");
 		}
 	}
-	appendStringInfoString(&databuf, "e\" | gnuplot -e \""               );
+	
+	appendStringInfoString(&databuf, "e\" | gnuplot -e \"");
+	appendStringInfoString(&databuf, gnuplot_cmds); //parameter for set commands;
+
 	if (strcmp(plot_output_mode, "svg") == 0) {
   	appendStringInfoString(&databuf, "set terminal svg;");
 	} else {
 		appendStringInfoString(&databuf, "set terminal dumb;");
 	}
-	appendStringInfoString(&databuf,  "plot '-' with lines\"");
+	appendStringInfoString(&databuf,  "plot '-' with lines\""); // using 0:2 For timeseries.  TODO autodetect timestamp.
 	
-	elog(LOG, "%s", databuf.data);
+	elog(LOG, "%s", databuf.data); //debugging - display full command in log.
+
+	/* Execute plot command*/
 	pf = popen(databuf.data, "r");
 	
 	if(!pf){
@@ -121,13 +128,15 @@ Datum plot(PG_FUNCTION_ARGS) {
 				 errmsg("Unable to open gnuplot pipe.")));
 	}
   
+  /* retrive GNU plot output*/
 	while (fgets(buf, 500, pf) != NULL) {
 	  if (in_count > 0) {
 	  	appendStringInfoString(&resultbuf, buf);
 	  }
 	  in_count++;
   }
-    
+  
+  /* cleanup */
 	if (pclose(pf) != 0) {
 		ereport(ERROR,
 				(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
@@ -138,9 +147,12 @@ Datum plot(PG_FUNCTION_ARGS) {
 	PG_RETURN_TEXT_P(cstring_to_text(resultbuf.data));
 }
 
+/* 
+* Sets a GUC.  Called at so load.
+*/
 void _PG_init(void) {
 
-  /* Main database to connect to. */
+  /* Output mode for plots.  svg or dumb.  Review how to make the so load at server start. */
   DefineCustomStringVariable("plotpg.mode",
                               "Plot output mode, recognized values: 'svg', 'dumb'",
                               NULL,
