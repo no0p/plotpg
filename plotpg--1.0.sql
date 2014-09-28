@@ -6,9 +6,18 @@ RETURNS text
 AS 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE FUNCTION plot(text, text DEFAULT '')
+CREATE FUNCTION plot_no_file(text, text DEFAULT '')
 RETURNS text
 AS 'MODULE_PATHNAME'
 LANGUAGE C;
 
+CREATE FUNCTION plot(text, text DEFAULT '')
+RETURNS text
+AS 'MODULE_PATHNAME'
+LANGUAGE C VOLATILE;
 
+-- functions on column names
+
+-- quartiles
+-- pie
+-- bar charts
