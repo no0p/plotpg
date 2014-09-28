@@ -10,14 +10,14 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-PG_MODULE_MAGIC;
-
 void _PG_init(void);
 Datum	sine(void);
 Datum plot(PG_FUNCTION_ARGS);
-Datum plot_no_file(PG_FUNCTION_ARGS);
 
+/* variables for gnuplot-esque gucs */
 char* gnuplot_terminal;
 char* gnuplot_title;
 char* gnuplot_xlabel;
 char* gnuplot_ylabel;
+char* gnuplot_xrange;
+char* gnuplot_yrange;
