@@ -55,6 +55,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 	
 	int ret;
 	int processed;
+	int i;
 
 	char pid_str[40];	
 	char line[80];
@@ -140,9 +141,10 @@ Datum plot(PG_FUNCTION_ARGS) {
 	appendStringInfo(&gnuplot_script_buf, "set title '%s';", gnuplot_title);
 	appendStringInfo(&gnuplot_script_buf, "set xlabel '%s';", gnuplot_xlabel);
 	appendStringInfo(&gnuplot_script_buf, "set ylabel '%s';", gnuplot_ylabel);
+	appendStringInfo(&gnuplot_script_buf, "set output '%s';", output_filename.data);	
 	
 	appendStringInfoString(&gnuplot_script_buf, gnuplot_cmds);
-	appendStringInfo(&gnuplot_script_buf, "set output '%s';", output_filename.data);	
+
 	appendStringInfo(&gnuplot_script_buf, "plot '%s' using 1:2", data_filename.data);	
 	
 	fprintf(f, "%s", gnuplot_script_buf.data);
@@ -153,9 +155,21 @@ Datum plot(PG_FUNCTION_ARGS) {
 	
 	/* Read and return output */
 	f = fopen(output_filename.data, "rb");
+	i = 0;
 	while(fgets(line, 80, f) != NULL) {
-		appendStringInfoString(&resultbuf, line);
+  	// skip first line which has a bogus character in dumb mode
+		if ((strcmp(gnuplot_terminal, "dumb") != 0) || i > 0) {
+			appendStringInfoString(&resultbuf, line);
+		}
+		i++;
 	}
+	fclose(f);
+	
+	
+	/* Cleanup */
+	remove(gnuplot_script_filename.data);
+	remove(data_filename.data);
+	remove(output_filename.data);
 	
 	PG_RETURN_TEXT_P(cstring_to_text(resultbuf.data));
 }
