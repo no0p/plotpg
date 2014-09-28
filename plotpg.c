@@ -1,24 +1,4 @@
-#include "postgres.h"
-#include "fmgr.h"
-#include "utils/builtins.h"
-#include "executor/spi.h"
-#include "lib/stringinfo.h"
-#include "tcop/utility.h"
-
-#include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-char* gnuplot_terminal;
-char* gnuplot_title;
-
-PG_MODULE_MAGIC;
-
-void _PG_init(void);
-Datum	sine(void);
-Datum plot(PG_FUNCTION_ARGS);
-Datum plot_no_file(PG_FUNCTION_ARGS);
+#include <plotpg.h>
 
 /*
 * A smoke test function.
@@ -158,6 +138,8 @@ Datum plot(PG_FUNCTION_ARGS) {
 	// TODO Append all GUCs, function which returns big string? -> 
 	appendStringInfo(&gnuplot_script_buf, "set terminal '%s';", gnuplot_terminal);
 	appendStringInfo(&gnuplot_script_buf, "set title '%s';", gnuplot_title);
+	appendStringInfo(&gnuplot_script_buf, "set xlabel '%s';", gnuplot_xlabel);
+	appendStringInfo(&gnuplot_script_buf, "set ylabel '%s';", gnuplot_ylabel);
 	
 	appendStringInfoString(&gnuplot_script_buf, gnuplot_cmds);
 	appendStringInfo(&gnuplot_script_buf, "set output '%s';", output_filename.data);	
@@ -303,21 +285,36 @@ Datum plot_no_file(PG_FUNCTION_ARGS) {
 void _PG_init(void) {
 
 	/* Output mode for plots.	svg or dumb.	Review how to make the so load at server start. */
-	DefineCustomStringVariable("terminal",
-                              "Plot output mode, recognized values: 'svg', 'dumb'",
-                              NULL,
-                              &gnuplot_terminal,
-                              "dumb",
-                              PGC_USERSET,
-                              0,
-                              NULL,
-                              NULL,
-                              NULL);
+	DefineCustomStringVariable("terminal", "gnuplot terminals 'svg', 'dumb' supported",
+                              NULL, &gnuplot_terminal, "dumb", PGC_USERSET, 0,
+                              NULL, NULL, NULL);
                               
 	DefineCustomStringVariable("title",
                               "Plot title",
                               NULL,
                               &gnuplot_title,
+                              "",
+                              PGC_USERSET,
+                              0,
+                              NULL,
+                              NULL,
+                              NULL);
+
+	DefineCustomStringVariable("xlabel",
+                              "label for the xaxis",
+                              NULL,
+                              &gnuplot_xlabel,
+                              "",
+                              PGC_USERSET,
+                              0,
+                              NULL,
+                              NULL,
+                              NULL);
+
+DefineCustomStringVariable("ylabel",
+                              "label for the y axis",
+                              NULL,
+                              &gnuplot_ylabel,
                               "",
                               PGC_USERSET,
                               0,
