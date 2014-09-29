@@ -6,7 +6,7 @@ Is this a good idea?  Probably not, but it may be interesting nonetheless.
 
 ## Installation
 
-1.  Gnuplot
+- Gnuplot
 
 Plotpg uses the *gnuplot* program to generate plot data.  Ensure that this application is installed and that the binary is in the path of the postgres user.  On an ubuntu system this command will do the trick:
 
@@ -14,7 +14,7 @@ Plotpg uses the *gnuplot* program to generate plot data.  Ensure that this appli
 sudo apt-get install gnuplot gnuplot-x11
 ```
 
-2.  The Extension
+- The Postgresql Extension
 
 Next install the extension:
 
@@ -106,7 +106,38 @@ Data is plotted by passing an sql query to the plot() function.  For example we'
 ```
 
 
-Plot accepts two parameters.  The first is the sql query which provides the result set which will be plotted.  The second parameter is optional, and it is a string that will be included in the gnuplot script.  This enables the user to add arbitrary gnuplot commands.
+Plot accepts two parameters.  The first is the sql query which provides the result set which will be plotted.  The second parameter is optional, and it is a string that will be included in the gnuplot script.  This enables the user to add arbitrary gnuplot commands.  Consider the following example which adds an arrow to the plot above.
+
+```
+=# select plot('select id, id from activities limit 10', 'set arrow 1 from 2, 6 to 5, 6; set label 1 "interesting" at 2,7 center;');
+                                     plot                                      
+-------------------------------------------------------------------------------
+                                                                              +
+   10 ++------+-------+------+-------+-------+-------+------+-------+------+A +
+      +       +       +      '/tmp/plotpg_data_11949.data' using 1:2+  A    + +
+    9 ++                                                            A      ++ +
+      |                                                                     | +
+    8 ++                                                    A              ++ +
+      |                                                                     | +
+    7 ++ interesting                                 A                     ++ +
+      |                                                                     | +
+    6 ++      >>>>>>>>>>>>>>>>>>>>>>>>       A                             ++ +
+      |                                                                     | +
+      |                                                                     | +
+    5 ++                             A                                     ++ +
+      |                                                                     | +
+    4 ++                     A                                             ++ +
+      |                                                                     | +
+    3 ++              A                                                    ++ +
+      |                                                                     | +
+    2 ++      A                                                            ++ +
+      +       +       +      +       +       +       +      +       +       + +
+    1 A+------+-------+------+-------+-------+-------+------+-------+------++ +
+      1       2       3      4       5       6       7      8       9       10+
+                                                                              +
+ 
+(1 row)
+```
 
 
 ### Output modes
@@ -115,6 +146,14 @@ Three output modes are the most useful: 'dumb', 'svg', and 'png'.  These are set
 
 ```
 psql=# set terminal='svg';
+SET
+
+=# select plot('select id, id from activities limit 10', 'set arrow 1 from 2, 6 to 5, 6; set label 1 "interesting" at 2,7 center;');
+--------------------------------------------------------------------------------------------------------
+ <?xml version="1.0" encoding="utf-8"  standalone="no"?>
+ <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1// ...
+ <svg width="600" height="480">
+   ....
 ```
 
 After the terminal value is set, calls to plot() during the current session will now output in the selected mode.  In dumb mode, the plot will printed in ASCII text similar to the sine example in the introduction.  In *svg* mode an svg plot will be returned
