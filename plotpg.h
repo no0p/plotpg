@@ -21,3 +21,9 @@ char* gnuplot_xlabel;
 char* gnuplot_ylabel;
 char* gnuplot_xrange;
 char* gnuplot_yrange;
+char* gnuplot_xtics;
+char* gnuplot_ytics;
+char* gnuplot_key;
+char* gnuplot_border;
+
+int plotpg_persist;
