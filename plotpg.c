@@ -34,6 +34,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 	int processed;
 	int i, j;
 
+	char *field_type_name;
 	char pid_str[40];	
 	char line[80];
 	char *sql_in = text_to_cstring(PG_GETARG_TEXT_PP(0));
@@ -102,9 +103,26 @@ Datum plot(PG_FUNCTION_ARGS) {
     for(i = 0; i < processed; i++) { // Poor man's COPY
       for(j = 1; j <= coltuptable->tupdesc->natts; j++) {
   	    
+  	    // If the first attribute is a timestamp or timestamptz, set the date format
+  	    //   for the x axis to be marked as a time data.
+  	    if (j == 1) {
+  	    	field_type_name = SPI_gettype(coltuptable->tupdesc, j);
+					if (strcmp(field_type_name, "timestamp") == 0 ||
+  	    			strcmp(field_type_name, "timestamptz") == 0) {
+  	    				
+  	    				appendStringInfoString(&gnuplot_script_buf, "set xdata time;");
+  	    				appendStringInfoString(&gnuplot_script_buf, "set timefmt '%Y-%m-%d %H:%M:%S';");
+  	    				appendStringInfoString(&gnuplot_script_buf, "set format x '%Y-%m-%d %H:%M:%S';");
+  	    	}
+  	   	}
+  	    
   	    // TODO Get attribute information for using, timefmt here.
   	    //   order by query index.
   	    elog(LOG, "here");
+  	    field_type_name = SPI_gettype(coltuptable->tupdesc, 1);
+  	    
+  	    
+  	    
   	    //coltuptable->tupdesc->attrs[j].atttypid
   	    
   	    if (SPI_getvalue(coltuptable->vals[i], coltuptable->tupdesc, j) != NULL) {
@@ -169,7 +187,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 	
 	appendStringInfoString(&gnuplot_script_buf, gnuplot_cmds);
 
-	appendStringInfo(&gnuplot_script_buf, "plot '%s' using 1:2", data_filename.data);	
+	appendStringInfo(&gnuplot_script_buf, "plot '%s' using 1:%d", data_filename.data, //TODO int);	
 	
 	fprintf(f, "%s", gnuplot_script_buf.data);
 	fclose(f);
