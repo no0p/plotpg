@@ -5,16 +5,17 @@ PG_MODULE_MAGIC;
 /*
  * The plot function receives an SQL statement and generates a plot.
  *
- *  It does this in a four step process.
+ *  It does this roughly in a five step process.  Outline below:
  *
- *  1.  execute the sql statement inside a copy command, storing the result
- *        in a temporary file.
+ *  1.  execute the sql statement
  *
- *  2.  write a gnuplot script based on options and parameters to a temp file.
+ *	2.  store contents in tsv temporary file
  *
- *  3.  invoke gnuplot to plot the temporary script created in step 2.
+ *  3.  write a gnuplot script based on options and parameters to a temp file.
  *
- *  4.  Read the output file from step 3, and return it.
+ *  4.  invoke gnuplot to plot the temporary script created in step 2.
+ *
+ *  5.  Read the output file from step 3, and return it.
  *
 */
 PG_FUNCTION_INFO_V1(plot);
@@ -33,13 +34,15 @@ Datum plot(PG_FUNCTION_ARGS) {
 	int ret;
 	int processed;
 	int i, j;
-	int natts;
+	
 
 	char *field_type_name;
 	char pid_str[40];	
 	char line[80];
 	char *sql_in = text_to_cstring(PG_GETARG_TEXT_PP(0));
 	char *gnuplot_cmds = text_to_cstring(PG_GETARG_TEXT_PP(1));
+	
+	int natts = 0;
 
 	int first_y_col = 2; // default unless X is timeseries
 
@@ -103,35 +106,42 @@ Datum plot(PG_FUNCTION_ARGS) {
   }
   
 	if (coltuptable != NULL) {
+
 		natts = coltuptable->tupdesc->natts;
-    for(i = 0; i < processed; i++) { // Poor man's COPY
+
+		// If the first attribute is a time formatted type, set the date format
+    //   for the x axis to be marked as a time data, as well as the timefmt so
+    //   gnuplot can read the data and convert to internal gnuplot-psuedo-epoch-time.
+		field_type_name = SPI_gettype(coltuptable->tupdesc, 1);
+		if (strcmp(field_type_name, "timestamp") == 0 || strcmp(field_type_name, "timestamptz") == 0) {
+			appendStringInfoString(&gnuplot_script_buf, "set xdata time;");
+			appendStringInfoString(&gnuplot_script_buf, "set timefmt '%Y-%m-%d %H:%M:%S';");
+			appendStringInfoString(&gnuplot_script_buf, "set format x '%Y-%m-%d %H:%M:%S';");
+
+			first_y_col = 3; // timestamp takes up cols 1 and 2 from gnuplot perspective
+		}
+		
+		// Set the X, Y axis and key labels ....
+		for(j = 1; j <= natts; j++) {
+			
+		}
+
+		/* Poor man's COPY */
+    for(i = 0; i < processed; i++) { 
       for(j = 1; j <= natts; j++) {
-  	    
-  	    // If the first attribute is a timestamp or timestamptz, set the date format
-  	    //   for the x axis to be marked as a time data.
-  	    if (j == 1) {
-  	    	field_type_name = SPI_gettype(coltuptable->tupdesc, j);
-					if (strcmp(field_type_name, "timestamp") == 0 ||
-  	    			strcmp(field_type_name, "timestamptz") == 0) {
-  	    				
-  	    				appendStringInfoString(&gnuplot_script_buf, "set xdata time;");
-  	    				appendStringInfoString(&gnuplot_script_buf, "set timefmt '%Y-%m-%d %H:%M:%S';");
-  	    				appendStringInfoString(&gnuplot_script_buf, "set format x '%Y-%m-%d %H:%M:%S';");
-  	    				
-  	    				first_y_col = 3;
-  	    	}
-  	   	}
-  	    
+      
+      
+  	    // append the value to the line for writing to the file.
   	    if (SPI_getvalue(coltuptable->vals[i], coltuptable->tupdesc, j) != NULL) {
     	    appendStringInfoString(&result_set_line, SPI_getvalue(coltuptable->vals[i], coltuptable->tupdesc, j));
     	  }
-		    appendStringInfo(&result_set_line, "\t");
+		    appendStringInfo(&result_set_line, "\t"); //delimiter
       }
+      // write the line to the file and reset the buffer
       appendStringInfo(&result_set_line, "\n");
 	    fprintf(f, "%s", result_set_line.data);  
       resetStringInfo(&result_set_line);
     }
-    
   }
 	
 	fclose(f);
@@ -184,14 +194,10 @@ Datum plot(PG_FUNCTION_ARGS) {
 	
 	appendStringInfoString(&gnuplot_script_buf, gnuplot_cmds);
 
-	appendStringInfo(&gnuplot_script_buf, "plot '%s' using 1:%d", data_filename.data, first_y_col);	
-	/* // TODO append more using values based on natts; 
-	
-		for (int i=0; i < natts; i++) {
-			appendStringInfo(&gnuplot_script_buf, "plot '%s' using 1:%d", data_filename.data, first_y_col);	
-		}
-	
-	*/
+	appendStringInfo(&gnuplot_script_buf, "plot '%s' using 1", data_filename.data);	
+	for (i = 0; i < (natts - 1); i++) { //the first attribute is "using 1" above, and it's always 1.
+		appendStringInfo(&gnuplot_script_buf, ":%d", first_y_col + i);	
+	}
 	
 	
 	fprintf(f, "%s", gnuplot_script_buf.data);
