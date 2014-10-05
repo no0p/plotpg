@@ -109,9 +109,11 @@ Datum plot(PG_FUNCTION_ARGS) {
 
 		natts = coltuptable->tupdesc->natts;
 
-		// If the first attribute is a time formatted type, set the date format
-    //   for the x axis to be marked as a time data, as well as the timefmt so
-    //   gnuplot can read the data and convert to internal gnuplot-psuedo-epoch-time.
+		/* 
+		 *   If the first attribute is a time formatted type, set the date format
+		 * for the x axis to be marked as a time data, as well as the timefmt so
+		 * gnuplot can read the data and convert to internal gnuplot-psuedo-epoch-time. 
+		 */
 		field_type_name = SPI_gettype(coltuptable->tupdesc, 1);
 		if (strcmp(field_type_name, "timestamp") == 0 || strcmp(field_type_name, "timestamptz") == 0) {
 			appendStringInfoString(&gnuplot_script_buf, "set xdata time;");
