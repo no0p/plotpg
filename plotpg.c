@@ -33,12 +33,15 @@ Datum plot(PG_FUNCTION_ARGS) {
 	int ret;
 	int processed;
 	int i, j;
+	int natts;
 
 	char *field_type_name;
 	char pid_str[40];	
 	char line[80];
 	char *sql_in = text_to_cstring(PG_GETARG_TEXT_PP(0));
 	char *gnuplot_cmds = text_to_cstring(PG_GETARG_TEXT_PP(1));
+
+	int first_y_col = 2; // default unless X is timeseries
 
 	/*
 	 *  Prep variables for temporary files
@@ -100,8 +103,9 @@ Datum plot(PG_FUNCTION_ARGS) {
   }
   
 	if (coltuptable != NULL) {
+		natts = coltuptable->tupdesc->natts;
     for(i = 0; i < processed; i++) { // Poor man's COPY
-      for(j = 1; j <= coltuptable->tupdesc->natts; j++) {
+      for(j = 1; j <= natts; j++) {
   	    
   	    // If the first attribute is a timestamp or timestamptz, set the date format
   	    //   for the x axis to be marked as a time data.
@@ -113,17 +117,10 @@ Datum plot(PG_FUNCTION_ARGS) {
   	    				appendStringInfoString(&gnuplot_script_buf, "set xdata time;");
   	    				appendStringInfoString(&gnuplot_script_buf, "set timefmt '%Y-%m-%d %H:%M:%S';");
   	    				appendStringInfoString(&gnuplot_script_buf, "set format x '%Y-%m-%d %H:%M:%S';");
+  	    				
+  	    				first_y_col = 3;
   	    	}
   	   	}
-  	    
-  	    // TODO Get attribute information for using, timefmt here.
-  	    //   order by query index.
-  	    elog(LOG, "here");
-  	    field_type_name = SPI_gettype(coltuptable->tupdesc, 1);
-  	    
-  	    
-  	    
-  	    //coltuptable->tupdesc->attrs[j].atttypid
   	    
   	    if (SPI_getvalue(coltuptable->vals[i], coltuptable->tupdesc, j) != NULL) {
     	    appendStringInfoString(&result_set_line, SPI_getvalue(coltuptable->vals[i], coltuptable->tupdesc, j));
@@ -187,7 +184,15 @@ Datum plot(PG_FUNCTION_ARGS) {
 	
 	appendStringInfoString(&gnuplot_script_buf, gnuplot_cmds);
 
-	appendStringInfo(&gnuplot_script_buf, "plot '%s' using 1:%d", data_filename.data, //TODO int);	
+	appendStringInfo(&gnuplot_script_buf, "plot '%s' using 1:%d", data_filename.data, first_y_col);	
+	/* // TODO append more using values based on natts; 
+	
+		for (int i=0; i < natts; i++) {
+			appendStringInfo(&gnuplot_script_buf, "plot '%s' using 1:%d", data_filename.data, first_y_col);	
+		}
+	
+	*/
+	
 	
 	fprintf(f, "%s", gnuplot_script_buf.data);
 	fclose(f);
