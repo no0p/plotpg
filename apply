@@ -1,0 +1,4 @@
+#!/bin/bash
+make
+sudo make install
+psql -d pgantenna_development -c 'drop extension plotpg; create extension plotpg;'
