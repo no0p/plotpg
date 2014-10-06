@@ -125,13 +125,16 @@ Datum plot(PG_FUNCTION_ARGS) {
 		
 		// Set the X, Y axis and key labels ....
 		for(j = 1; j <= natts; j++) {
-			
+			if (j == 1)
+				appendStringInfo(&gnuplot_script_buf, "set xlabel '%s';", SPI_fname(coltuptable->tupdesc, j));
+			if (j == 2)
+				appendStringInfo(&gnuplot_script_buf, "set ylabel '%s';", SPI_fname(coltuptable->tupdesc, j));
+			// TODO keys
 		}
 
 		/* Poor man's COPY */
     for(i = 0; i < processed; i++) { 
       for(j = 1; j <= natts; j++) {
-      
       
   	    // append the value to the line for writing to the file.
   	    if (SPI_getvalue(coltuptable->vals[i], coltuptable->tupdesc, j) != NULL) {
@@ -163,10 +166,6 @@ Datum plot(PG_FUNCTION_ARGS) {
 	  PG_RETURN_TEXT_P(cstring_to_text(""));
 	}
 	
-	
-
-	// TODO interpolate data about the data set into titles, labels, etc.  Will 
-	//   require change away from copy potentially.
 	
 	if (strcmp(gnuplot_terminal, "") != 0)
 		appendStringInfo(&gnuplot_script_buf, "set terminal %s;", gnuplot_terminal);
@@ -222,7 +221,6 @@ Datum plot(PG_FUNCTION_ARGS) {
 	fclose(f);
 	
 	/* Cleanup */
-	
 	if (plotpg_persist < 1) {
 		remove(gnuplot_script_filename.data);
 		remove(data_filename.data);
