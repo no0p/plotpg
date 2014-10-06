@@ -105,7 +105,7 @@ void _PG_init(void) {
                             "plotpg will leave gnuplot script and output files in /tmp when set to 1.",
                             NULL,
                             &plotpg_persist,
-                            1,
+                            0,
                             0,
                             INT_MAX,
                             PGC_SIGHUP,
