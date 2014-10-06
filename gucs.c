@@ -96,8 +96,8 @@ void _PG_init(void) {
                               NULL, NULL, NULL);
                               
                               
-                              
-DefineCustomIntVariable("plotpg.persist",
+  // A debug option                            
+	DefineCustomIntVariable("plotpg.persist",
                             "plotpg will leave gnuplot script and output files in /tmp when set to 1.",
                             NULL,
                             &plotpg_persist,

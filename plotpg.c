@@ -118,7 +118,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 		if (strcmp(field_type_name, "timestamp") == 0 || strcmp(field_type_name, "timestamptz") == 0) {
 			appendStringInfoString(&gnuplot_script_buf, "set xdata time;");
 			appendStringInfoString(&gnuplot_script_buf, "set timefmt '%Y-%m-%d %H:%M:%S';");
-			appendStringInfoString(&gnuplot_script_buf, "set format x '%Y-%m-%d %H:%M:%S';");
+			appendStringInfoString(&gnuplot_script_buf, "set format x '%H:%M:%S';");
 
 			first_y_col = 3; // timestamp takes up cols 1 and 2 from gnuplot perspective
 		}
@@ -169,10 +169,10 @@ Datum plot(PG_FUNCTION_ARGS) {
 	//   require change away from copy potentially.
 	
 	if (strcmp(gnuplot_terminal, "") != 0)
-	appendStringInfo(&gnuplot_script_buf, "set terminal %s;", gnuplot_terminal);
+		appendStringInfo(&gnuplot_script_buf, "set terminal %s;", gnuplot_terminal);
 
 	if (strcmp(gnuplot_title, "") != 0)
-	appendStringInfo(&gnuplot_script_buf, "set title '%s';", gnuplot_title);
+		appendStringInfo(&gnuplot_script_buf, "set title %s;", gnuplot_title);
 	
 	if (strcmp(gnuplot_xlabel, "") != 0)
 		appendStringInfo(&gnuplot_script_buf, "set xlabel %s;", gnuplot_xlabel);
