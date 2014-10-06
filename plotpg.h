@@ -16,6 +16,7 @@ Datum plot(PG_FUNCTION_ARGS);
 
 /* variables for gnuplot-esque gucs */
 char* gnuplot_terminal;
+char* gnuplot_size;
 char* gnuplot_title;
 char* gnuplot_xlabel;
 char* gnuplot_ylabel;

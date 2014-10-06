@@ -13,6 +13,10 @@ void _PG_init(void) {
                               NULL, &gnuplot_terminal, "dumb", PGC_USERSET, 0,
                               NULL, NULL, NULL);
                               
+	DefineCustomStringVariable("plotpg.size", "The gnuplot size command",
+                              NULL, &gnuplot_size, "", PGC_USERSET, 0,
+                              NULL, NULL, NULL);
+                              
 	DefineCustomStringVariable("plotpg.title",
                               "Plot title",
                               NULL,

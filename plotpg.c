@@ -170,6 +170,9 @@ Datum plot(PG_FUNCTION_ARGS) {
 	if (strcmp(gnuplot_terminal, "") != 0)
 		appendStringInfo(&gnuplot_script_buf, "set terminal %s;", gnuplot_terminal);
 
+	if (strcmp(gnuplot_size, "") != 0)
+		appendStringInfo(&gnuplot_script_buf, "set size %s;", gnuplot_size);
+
 	if (strcmp(gnuplot_title, "") != 0)
 		appendStringInfo(&gnuplot_script_buf, "set title %s;", gnuplot_title);
 	
