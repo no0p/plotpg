@@ -97,7 +97,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 	
 	/* Iterate over result set writing to file */
 	
-	f = fopen(data_filename.data, "a+");
+	f = fopen(data_filename.data, "w");
   
   if (f == NULL) {
     fclose(f);
