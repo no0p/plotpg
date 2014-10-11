@@ -4,6 +4,8 @@ Plotpg is an experiment to generate charts from postgresql result sets.
 
 It provides functions which interact with gnuplot to generate the charts.
 
+<a href="http://no0p.github.io/plotpg/">Project Page</a>
+
 ## Installation
 
 Plotpg is a typical postgresql extension.
