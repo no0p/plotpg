@@ -11,7 +11,6 @@
 #include <unistd.h>
 
 void _PG_init(void);
-Datum	sine(void);
 Datum plot(PG_FUNCTION_ARGS);
 Datum gnuplot(PG_FUNCTION_ARGS);
 
