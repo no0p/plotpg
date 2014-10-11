@@ -17,6 +17,12 @@ make
 sudo make install
 ```
 
+Plotpg provides a plot(text, text default '') function for plotting data, and a gnuplot(text) function for plotting analytic functions.  After installation, these functions can be added to a database with the following command in psql.
+
+```
+=# create extension plotpg;
+```
+
 ### A Gnuplot Dependency
 
 Plotpg uses the *gnuplot* program to generate plot data.  So the extension will only work if this application is installed, and the gnuplot binary is in the path of the postgres user.  On an ubuntu system the following command will suffice:
