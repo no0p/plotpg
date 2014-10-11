@@ -76,7 +76,9 @@ Datum gnuplot(PG_FUNCTION_ARGS) {
 	
 	/* Execute Gnuplot script */
 	ret = system(gnuplot_command.data);
-	elog(LOG, "%d", ret);
+	if (ret < 0) {
+		PG_RETURN_TEXT_P(cstring_to_text("There was an error running the gnuplot command"));
+	}
 		
 	/* Read and return output */
 	f = fopen(output_filename.data, "rb");
