@@ -13,6 +13,7 @@
 void _PG_init(void);
 Datum	sine(void);
 Datum plot(PG_FUNCTION_ARGS);
+Datum gnuplot(PG_FUNCTION_ARGS);
 
 /* variables for gnuplot-esque gucs */
 char* gnuplot_terminal;

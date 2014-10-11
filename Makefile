@@ -1,5 +1,5 @@
 MODULE_big= plotpg
-OBJS=plotpg.o sine.o gucs.o
+OBJS=plotpg.o sine.o gucs.o gnuplot.o
 
 EXTENSION = plotpg
 DATA = plotpg--1.0.sql

@@ -209,6 +209,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 	
 	/* Execute Gnuplot script */
 	ret = system(gnuplot_command.data);
+
 	
 	/* Read and return output */
 	f = fopen(output_filename.data, "rb");
