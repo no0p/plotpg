@@ -77,7 +77,7 @@ Plots for any medium
 <h3>
 <a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Under the hood</h3>
 
-<p>plotpg is an experiment: a mix of gnuplot and a postgresql.  When a query is passed to the plot function, it is evaluated and passed to gnuplot.  As a result, the resulting plot can be modified with standard gnuplot commands.  The provided plot function accepts a second optional parameter of gnuplot commands.</p>
+<p>plotpg is an experiment: a mix of gnuplot and a postgresql.  When a query is passed to the plot function, it is evaluated and passed to gnuplot.  As a result, the resulting plot can be modified with standard gnuplot commands.  The provided plot function accepts an optional second parameter of gnuplot commands.</p>
 
 <pre><code> =# select plot('select x, y from data', 
 'set style data lines; set title ''foo'';');
@@ -88,7 +88,7 @@ Plots for any medium
 
 <h3>Installation</h3>
 
-<p>Plotpg is a typical extension.</p>
+<p>Plotpg is installed like a typical extension.</p>
 
 <pre><code>
 git clone git@github.com:no0p/plotpg.git
@@ -98,7 +98,7 @@ sudo make install
 psql -c 'create extension plotpg;'
 </code></pre>
 
-<p>Plotpg is under the same license as Postgresql.</p>      
+<p>Plotpg is available under the same license as Postgresql.</p>      
       
       </section>
       <footer>
