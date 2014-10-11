@@ -17,7 +17,7 @@ make
 sudo make install
 ```
 
-Plotpg provides a plot(text, text default '') function for plotting data, and a gnuplot(text) function for plotting analytic functions.  After installation, these functions can be added to a database with the following command in psql.
+Plotpg provides a <a href="https://github.com/no0p/plotpg/wiki/Plotting-Data">plot</a> function for plotting data, and a <a href="https://github.com/no0p/plotpg/wiki/Plotting-Functions">gnuplot</a> function for plotting analytic functions.  After installation, these functions can be added to a database with the following command in psql.
 
 ```
 =# create extension plotpg;
