@@ -1,28 +1,26 @@
 ## Introduction
 
-Plotpg is an experiment to generate charts and plots in the database.
+Plotpg is an experiment to generate charts from postgresql result sets.
 
-Is this a good idea?  Probably not, but it may be interesting nonetheless.
+It provides functions which interact with gnuplot to generate the charts.
 
 ## Installation
 
-- Gnuplot
-
-Plotpg uses the *gnuplot* program to generate plot data.  Ensure that this application is installed and that the binary is in the path of the postgres user.  On an ubuntu system this command will do the trick:
-
-```
-sudo apt-get install gnuplot gnuplot-x11
-```
-
-- The Postgresql Extension
-
-Next install the extension:
+Plotpg is a typical postgresql extension.
 
 ```
 git clone git@github.com:no0p/plotpg.git
 cd plotpg
 make
 sudo make install
+```
+
+### A Gnuplot Dependency
+
+Plotpg uses the *gnuplot* program to generate plot data.  So the extension will only work if this application is installed, and the gnuplot binary is in the path of the postgres user.  On an ubuntu system the following command will suffice:
+
+```
+sudo apt-get install gnuplot gnuplot-x11
 ```
 
 ## Usage
