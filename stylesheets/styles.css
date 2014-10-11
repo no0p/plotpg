@@ -5,6 +5,7 @@ body {
   font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
   color:#777;
   font-weight:300;
+  font-size: 120%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -58,14 +59,14 @@ blockquote {
 }
 
 code, pre {
-  font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
+  font-family: monospace;
   color:#333;
-  font-size:12px;
+  font-size:16px;
 }
 
 pre {
   padding:8px 15px;
-  background: #f8f8f8;  
+  background: #cfcfcf;  
   border-radius:5px;
   border:1px solid #e5e5e5;
   overflow-x: auto;
