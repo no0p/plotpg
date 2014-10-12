@@ -10,9 +10,17 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#define GNUPLOT_UNKNOWN   -1
+#define GNUPLOT_HISTOGRAM  1
+#define GNUPLOT_HORIZ_BAR  2
+#define GNUPLOT_TIMESERIES 3
+#define GNUPLOT_SCATTER    4
+
 void _PG_init(void);
 Datum plot(PG_FUNCTION_ARGS);
 Datum gnuplot(PG_FUNCTION_ARGS);
+
+int infer_chart_type(int, char*, char*);
 
 /* variables for gnuplot-esque gucs */
 char* gnuplot_terminal;

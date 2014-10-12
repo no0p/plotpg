@@ -1,12 +1,12 @@
 #include <plotpg.h>
 
 /*
- * The gnuplot() function provides a direct way to generate plots with gnuplot
- *   commands.  This is primarily provided for flexibility for gnuplot power
- *   users.  
+ *   The gnuplot() function provides a direct way to generate plots with gnuplot
+ * commands.  This is primarily provided for flexibility for gnuplot power
+ * users.  
  *
- * A user could, for example, build their own data set with a COPY command, and
- *   subsequently provide a gnuplot script which leverages the data set.
+ *   A user could, for example, build their own data set with a COPY command, and
+ * subsequently provide a gnuplot script which leverages the data set.
  *
  * Another use case could be a user that wishes to plot analytic functions.
  *
@@ -53,8 +53,8 @@ Datum gnuplot(PG_FUNCTION_ARGS) {
 	 * 
 	 * Write Gnuplot script 
 	 *
-	 *  TODO consider adding the application of GUCs to the script in a 
-	 *    shared function also used by plot().
+	 *    TODO consider adding the application of GUCs to the script in a 
+	 *  shared function also used by plot().
 	 */
 	f = fopen(gnuplot_script_filename.data, "w");
 	
