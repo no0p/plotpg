@@ -211,7 +211,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 			appendStringInfoString(&gnuplot_script_buf, "");
 			break;
 		case GNUPLOT_SCATTER :
-			appendStringInfoString(&gnuplot_script_buf, "");
+			appendStringInfoString(&gnuplot_script_buf, "set style data points;");
 			break;
 		default :
 			PG_RETURN_TEXT_P(cstring_to_text("Unsure how to plot data set."));
