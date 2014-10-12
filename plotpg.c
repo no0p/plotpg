@@ -323,7 +323,7 @@ Datum plot(PG_FUNCTION_ARGS) {
  *  own commands to plot, or even using the more manual gnuplot() function.
  */
 int infer_chart_type(int n_records, char* first_col_field_type, char* second_col_field_type) {
-	
+
 	if (n_records == 1) {
 		 return GNUPLOT_HORIZ_BAR;
 	} else if (strcmp(first_col_field_type, "timestamp") == 0 || 
@@ -336,7 +336,7 @@ int infer_chart_type(int n_records, char* first_col_field_type, char* second_col
 							 strcmp(second_col_field_type, "real") == 0 ||
 							 strcmp(second_col_field_type, "float") == 0 ||
 							 strcmp(second_col_field_type, "bigint") == 0 ||
-							 strcmp(second_col_field_type, "int") == 0 ||
+							 strstr(second_col_field_type, "int") == second_col_field_type ||
 							 strcmp(second_col_field_type, "decimal") == 0)
 						) {
 		return GNUPLOT_HISTOGRAM;
@@ -345,13 +345,13 @@ int infer_chart_type(int n_records, char* first_col_field_type, char* second_col
 							 strcmp(first_col_field_type, "real") == 0 ||
 							 strcmp(first_col_field_type, "float") == 0 ||
 							 strcmp(first_col_field_type, "bigint") == 0 ||
-							 strcmp(first_col_field_type, "int") == 0 ||
+							 strstr(first_col_field_type, "int") == first_col_field_type ||
 							 strcmp(first_col_field_type, "decimal") == 0) &&
 								 (strcmp(second_col_field_type, "numeric") == 0 ||
 								 strcmp(second_col_field_type, "real") == 0 ||
 								 strcmp(second_col_field_type, "float") == 0 ||
 								 strcmp(second_col_field_type, "bigint") == 0 ||
-								 strcmp(second_col_field_type, "int") == 0 ||
+								 strstr(second_col_field_type, "int") == second_col_field_type ||
 								 strcmp(second_col_field_type, "decimal") == 0)
 						) {
 		return GNUPLOT_SCATTER;
