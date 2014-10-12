@@ -119,6 +119,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 			appendStringInfoString(&gnuplot_script_buf, "set xdata time;");
 			appendStringInfoString(&gnuplot_script_buf, "set timefmt '%Y-%m-%d %H:%M:%S';");
 			appendStringInfoString(&gnuplot_script_buf, "set format x '%H:%M:%S';");
+			appendStringInfoString(&gnuplot_script_buf, "set xtics rotate by -45 offset -1;");
 
 			first_y_col = 3; // timestamp takes up cols 1 and 2 from gnuplot perspective
 		}
