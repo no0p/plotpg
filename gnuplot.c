@@ -35,7 +35,7 @@ Datum gnuplot(PG_FUNCTION_ARGS) {
 	 */
 	sprintf(pid_str, "%ld", (long) getpid());
 	
-  initStringInfo(&output_filename);
+	initStringInfo(&output_filename);
 	appendStringInfo(&output_filename, "/tmp/plotpg_%s.output", pid_str);
 
 	initStringInfo(&gnuplot_script_filename);
