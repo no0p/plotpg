@@ -21,6 +21,7 @@ Datum plot(PG_FUNCTION_ARGS);
 Datum gnuplot(PG_FUNCTION_ARGS);
 
 int infer_chart_type(int, char*, char*);
+bool is_ordinal(char*);
 
 /* variables for gnuplot-esque gucs */
 char* gnuplot_terminal;

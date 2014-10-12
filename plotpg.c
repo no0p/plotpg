@@ -116,30 +116,26 @@ Datum plot(PG_FUNCTION_ARGS) {
 	appendStringInfo(&gnuplot_script_buf, "set ylabel '%s';", SPI_fname(coltuptable->tupdesc, 2));
 	
 	/* 
-	 * Iterate over the fields to build the final plot statement
+	 *   Build the plot statement.  Handle first field separately, then iterate 
+	 * over the fields to add additional commands.
 	 */
 	appendStringInfo(&plot_statement, "plot '%s' using 1", data_filename.data);	
-	for(j = 2; j <= natts; j++) {
-		if (j == 2) {
+	
+	if (plot_type == GNUPLOT_HORIZ_BAR) {
+		appendStringInfo(&plot_statement, " title '%s'", SPI_fname(coltuptable->tupdesc, 1));	
+	}
+	
+	for(j = 2; j <= natts; j++) {		
+		if (is_ordinal(SPI_gettype(coltuptable->tupdesc, j))) {
 			switch (plot_type) {
 				case GNUPLOT_TIMESERIES :
-					appendStringInfo(&plot_statement, ":%d", j + 1);
+					appendStringInfo(&plot_statement, ":%d", j +1);
+					break;
+				case GNUPLOT_HORIZ_BAR :
+					appendStringInfo(&plot_statement, ", '' using %d title '%s'", j, SPI_fname(coltuptable->tupdesc, j));
 					break;
 				default :
 					appendStringInfo(&plot_statement, ":%d", j);
-			}
-		}
-		
-		if (j > 2) {
-			if (strcmp(SPI_gettype(coltuptable->tupdesc, j), "numeric") == 0 ||
-					 strcmp(SPI_gettype(coltuptable->tupdesc, j), "real") == 0 ||
-					 strcmp(SPI_gettype(coltuptable->tupdesc, j), "float") == 0 ||
-					 strcmp(SPI_gettype(coltuptable->tupdesc, j), "bigint") == 0 ||
-					 strcmp(SPI_gettype(coltuptable->tupdesc, j), "int") == 0 ||
-					 strcmp(SPI_gettype(coltuptable->tupdesc, j), "decimal") == 0) {
-					 
-				appendStringInfo(&plot_statement, ":%d", j);
-				// update keys....
 			}
 		}
 	}
@@ -193,7 +189,17 @@ Datum plot(PG_FUNCTION_ARGS) {
 	/* Add gnuplot commands based on the plot_type */
 	switch (plot_type) {
 		case GNUPLOT_HORIZ_BAR :
-			appendStringInfoString(&gnuplot_script_buf, "");
+			appendStringInfoString(&gnuplot_script_buf, "set style data histogram;");
+			appendStringInfoString(&gnuplot_script_buf, "set style histogram rowstacked;");
+			appendStringInfoString(&gnuplot_script_buf, "set xlabel '';");
+			appendStringInfoString(&gnuplot_script_buf, "set ylabel '';");
+			appendStringInfoString(&gnuplot_script_buf, "unset border;");
+			appendStringInfoString(&gnuplot_script_buf, "unset xtics;");
+			appendStringInfoString(&gnuplot_script_buf, "set xtics format ' ';");
+			appendStringInfoString(&gnuplot_script_buf, "unset ytics;");
+			appendStringInfoString(&gnuplot_script_buf, "set ytics format ' ';");
+			appendStringInfoString(&gnuplot_script_buf, "set style fill solid border -1;");
+			appendStringInfoString(&gnuplot_script_buf, "set xrange [-1:2];");
 			break;
 		case GNUPLOT_TIMESERIES :
 		  /* 
@@ -206,9 +212,11 @@ Datum plot(PG_FUNCTION_ARGS) {
 			appendStringInfoString(&gnuplot_script_buf, "set timefmt '%Y-%m-%d %H:%M:%S';");
 			appendStringInfoString(&gnuplot_script_buf, "set format x '%H:%M:%S';");
 			appendStringInfoString(&gnuplot_script_buf, "set xtics rotate by -45 offset -1;");
+			appendStringInfoString(&gnuplot_script_buf, "set xtics nomirror;");
+			appendStringInfoString(&gnuplot_script_buf, "set ytics nomirror;");
 			break;
 		case GNUPLOT_HISTOGRAM :
-			appendStringInfoString(&gnuplot_script_buf, "");
+			appendStringInfoString(&gnuplot_script_buf, "set style data histogram;");
 			break;
 		case GNUPLOT_SCATTER :
 			appendStringInfoString(&gnuplot_script_buf, "set style data points;");
@@ -327,39 +335,30 @@ int infer_chart_type(int n_records, char* first_col_field_type, char* second_col
 	if (n_records == 1) {
 		 return GNUPLOT_HORIZ_BAR;
 	} else if (strcmp(first_col_field_type, "timestamp") == 0 || 
-						strcmp(first_col_field_type, "timestamptz") == 0
-						) {
+						 strcmp(first_col_field_type, "timestamptz") == 0) {
 		return GNUPLOT_TIMESERIES;
 		
-	} else if (strcmp(first_col_field_type, "text") == 0 && (
-							 strcmp(second_col_field_type, "numeric") == 0 ||
-							 strcmp(second_col_field_type, "real") == 0 ||
-							 strcmp(second_col_field_type, "float") == 0 ||
-							 strcmp(second_col_field_type, "bigint") == 0 ||
-							 strstr(second_col_field_type, "int") == second_col_field_type ||
-							 strcmp(second_col_field_type, "decimal") == 0)
-						) {
+	} else if (strcmp(first_col_field_type, "text") == 0 && (is_ordinal(second_col_field_type))) {
 		return GNUPLOT_HISTOGRAM;
-		
-	}	else if ((strcmp(first_col_field_type, "numeric") == 0 ||
-							 strcmp(first_col_field_type, "real") == 0 ||
-							 strcmp(first_col_field_type, "float") == 0 ||
-							 strcmp(first_col_field_type, "bigint") == 0 ||
-							 strstr(first_col_field_type, "int") == first_col_field_type ||
-							 strcmp(first_col_field_type, "decimal") == 0) &&
-								 (strcmp(second_col_field_type, "numeric") == 0 ||
-								 strcmp(second_col_field_type, "real") == 0 ||
-								 strcmp(second_col_field_type, "float") == 0 ||
-								 strcmp(second_col_field_type, "bigint") == 0 ||
-								 strstr(second_col_field_type, "int") == second_col_field_type ||
-								 strcmp(second_col_field_type, "decimal") == 0)
-						) {
+	}	else if (is_ordinal(first_col_field_type) && is_ordinal(second_col_field_type)) {
 		return GNUPLOT_SCATTER;
 	}
 	
 	return GNUPLOT_UNKNOWN;
 }
 
+
+bool is_ordinal(char* field_type) {
+	if (strcmp(field_type, "numeric") == 0 ||
+			strcmp(field_type, "real") == 0 ||
+		  strcmp(field_type, "float") == 0 ||
+			strcmp(field_type, "bigint") == 0 ||
+			strstr(field_type, "int") == field_type ||
+			strcmp(field_type, "decimal") == 0) {
+		return true;	
+	}
+	return false;
+}
 
 
 
