@@ -25,10 +25,18 @@ Plotpg provides a <a href="https://github.com/no0p/plotpg/wiki/Plotting-Data">pl
 
 ### A Gnuplot Dependency
 
-Plotpg uses the *gnuplot* program to generate plot data.  So the extension will only work if this application is installed, and the gnuplot binary is in the path of the postgres user.  On an ubuntu system the following command will suffice:
+Plotpg uses the *gnuplot* program to generate plot data.  So the extension will only work if this application is installed.  On an ubuntu system the following command will suffice:
 
 ```
 sudo apt-get install gnuplot gnuplot-x11
+```
+
+## Basic Usage
+
+Please see the <a href="https://github.com/no0p/plotpg/wiki">project wiki</a> for usage examples.  A basic pattern of use follows:
+
+```
+select plot('select price, weight from widgets');
 ```
 
 
