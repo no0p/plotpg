@@ -119,28 +119,36 @@ Datum plot(PG_FUNCTION_ARGS) {
 	 *   Build the plot statement.  Handle first field separately, then iterate 
 	 * over the fields to add additional commands.
 	 */
-	appendStringInfo(&plot_statement, "plot '%s' using 1", data_filename.data);	
-	
-	if (plot_type == GNUPLOT_HORIZ_BAR) {
-		appendStringInfo(&plot_statement, " title '%s'", SPI_fname(coltuptable->tupdesc, 1));	
-	}
-	
-	for(j = 2; j <= natts; j++) {		
-		if (is_ordinal(SPI_gettype(coltuptable->tupdesc, j))) {
-			switch (plot_type) {
-				case GNUPLOT_TIMESERIES :
-					appendStringInfo(&plot_statement, ":%d", j +1);
-					break;
-				case GNUPLOT_HORIZ_BAR :
-					appendStringInfo(&plot_statement, ", '' using %d title '%s'", j, SPI_fname(coltuptable->tupdesc, j));
-					break;
-				default :
+	switch (plot_type) {
+		case GNUPLOT_TIMESERIES :
+			appendStringInfo(&plot_statement, "plot '%s' using 1", data_filename.data);	
+			for(j = 3; j <= natts; j++) {		
+				if (is_ordinal(SPI_gettype(coltuptable->tupdesc, j)))
 					appendStringInfo(&plot_statement, ":%d", j);
 			}
-		}
+			break;
+		case GNUPLOT_HORIZ_BAR :
+			appendStringInfo(&plot_statement, "plot '%s' using 1", data_filename.data);	
+			appendStringInfo(&plot_statement, " title '%s'", SPI_fname(coltuptable->tupdesc, 1));	
+			for(j = 2; j <= natts; j++) {		
+				if (is_ordinal(SPI_gettype(coltuptable->tupdesc, j)))
+					appendStringInfo(&plot_statement, ", '' using %d title '%s'", j, SPI_fname(coltuptable->tupdesc, j));
+			}
+			break;
+		case GNUPLOT_HISTOGRAM :
+			appendStringInfo(&plot_statement, "plot '%s' using 2:xticlabels(1)", data_filename.data);
+			appendStringInfoString(&gnuplot_script_buf, "set style data histogram;");
+			appendStringInfoString(&gnuplot_script_buf, "set style fill pattern;");
+			break;
+		case GNUPLOT_SCATTER :
+			appendStringInfo(&plot_statement, "plot '%s' using 1", data_filename.data);
+			for(j = 2; j <= natts; j++) {		
+				if (is_ordinal(SPI_gettype(coltuptable->tupdesc, j)))
+					appendStringInfo(&plot_statement, ":%d", j);
+			}
+			appendStringInfoString(&gnuplot_script_buf, "set style data points;");
+			break;
 	}
-	// Modify plot command with "with" type modifiers 
-	
 	
 	/* No key if 1 dependent variable*/
 	if (natts < 3) {
@@ -217,6 +225,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 			break;
 		case GNUPLOT_HISTOGRAM :
 			appendStringInfoString(&gnuplot_script_buf, "set style data histogram;");
+			appendStringInfoString(&gnuplot_script_buf, "set style fill pattern;");
 			break;
 		case GNUPLOT_SCATTER :
 			appendStringInfoString(&gnuplot_script_buf, "set style data points;");
