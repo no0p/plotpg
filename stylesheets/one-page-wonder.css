@@ -20,8 +20,12 @@ table.link_table td {
 	padding-left: 40px;
 }
 
+p.leadx {
+	font-size: 180%;
+}
+
 .container {
-	margin-top: -25px;
+	margin-top: -50px;
 }
 
 .navbar {

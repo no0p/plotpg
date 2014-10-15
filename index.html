@@ -47,13 +47,13 @@
 
         <!-- First Featurette -->
         <div class="featurette" id="about">
-            <img class="featurette-image img-responsive pull-right" src="images/scatter_line_2.png">
+            <img class="featurette-image img-responsive pull-right" style="margin-top: 70px;" src="images/scatter_line_4.png">
             <h2 class="featurette-heading">Basic
                 <span class="text-muted">Example</span>
             </h2>
             <pre><code>=# create table data (x int, y int);
 =# insert into data values (1, 1), (2, 2), (3, 3), (4, 4);
-=# select plot('select x, y from data');
+=# <b>select plot('select x, y from data');</b>
        plot
 -------------------
  &lt;?xml version="1.0" encoding="utf-8"....
@@ -73,7 +73,8 @@
         <br/>
         
 				<pre><code>
-=# select plot('select x, y from data', 'set style data lines;');
+=# <b>select plot('select x, y from data', 'set style data lines;');</b>
+
                                                     plot                                                     
 -------------------------------------------------------------------------------------------------------------
                                                                                                             +
@@ -109,12 +110,41 @@
         <hr class="featurette-divider">
 
         <!-- Third Featurette -->
-        <div class="featurette" id="contact">
+        <div class="featurette" id="timeseries">
 
             <h2 class="featurette-heading">Time Series
             </h2>
-             <p class="lead">When first_column::timestamp</p>
-            <img class="featurette-image" src="images/chart_tx_sec_white_background.png">
+             <p class="lead">When first_column::timestamp.  <a href="https://github.com/no0p/plotpg/wiki/The-plot-Function#time-series">Example</a></p>
+            <img class="" src="images/chart_tx_large.png">
+        </div>
+        
+        <hr class="featurette-divider">
+
+        <!-- First Featurette -->
+        <div class="featurette" id="varioustypes">
+            
+            <h2 class="featurette-heading">Different result sets,  <span class="text-muted">different plots</span>.
+            </h2>
+            <p class="lead">The characteristics of the result set will determine plot types.  <a href="https://github.com/no0p/plotpg/wiki/The-plot-Function#plotting-conventions">Documentation</a></p>
+
+              <table>
+		            <tr>
+		              <td><img src="images/chart_6_histo.png" height="400px"></td>
+   		            <td style="padding-left: 60px"><img src="images/chart_1.png" height="400px"></td>
+   		          </tr>
+   		        </table>
+
+        </div>
+        
+        
+        <hr class="featurette-divider">
+
+        <!-- Third Featurette -->
+        <div class="featurette" id="why">
+            <h2 class="featurette-heading">Why plot <span class="text-muted">in the database?</span></h2><br/>
+            <p class="lead leadx">In the apocryphal words of Willie Sutton, "it's where the data is."</p>
+            
+            <p class="lead leadx">The original use case was to allow users to create their own monitoring charts simply by writing queries against postgresql statstics tables in <a href="https://github.com/no0p/pgantenna">pgantenna</a>.</p>
         </div>
 
         <hr class="featurette-divider">
@@ -126,6 +156,9 @@
                 	<table class="link_table">
                 	  <tr>
                 	    <td class="first">
+						            <a class="subheader_link" href="https://github.com/no0p/plotpg#installation">Installation</a>
+						          </td>
+						          <td>
 						            <a class="subheader_link" href="https://github.com/no0p/plotpg">Source Code</a>
 						          </td>
 						          <td>
