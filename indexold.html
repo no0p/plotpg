@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Plotpg by no0p</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Plotpg</h1>
+        <p>Plotting data from Postgresql result sets.</p>
+
+        <p class="view"><a href="https://github.com/no0p/plotpg">View the Project on GitHub </a></p>
+
+
+       
+      </header>
+      <section>
+        <h3>
+<a class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Plotpg.</h3>
+
+<p>Plotpg is a Postgresql extension which provides a number of functions to plot result sets.</p>
+
+<pre><code>=# create table data (x int, y int);
+=# insert into data values (1, 1), (2, 2), (3, 3), (4, 4), (5, 5);
+=# select plot('select x, y from data');
+       plot
+-------------------
+ &lt;?xml version="1.0" encoding="utf-8"....
+ &lt;svg&gt;.... 
+</code></pre>
+
+<?xml version="1.0" encoding="utf-8"  standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg  width="396" height="316"  viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Gnuplot</title><desc>Produced by GNUPLOT 4.6 patchlevel 4 </desc><g id="gnuplot_canvas"><rect x="0" y="0" width="396" height="316" fill="none"/><defs><circle id='gpDot' r='0.5' stroke-width='0.5'/><path id='gpPt0' stroke-width='0.222' stroke='currentColor' d='M-1,0 h2 M0,-1 v2'/><path id='gpPt1' stroke-width='0.222' stroke='currentColor' d='M-1,-1 L1,1 M1,-1 L-1,1'/><path id='gpPt2' stroke-width='0.222' stroke='currentColor' d='M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1'/><rect id='gpPt3' stroke-width='0.222' stroke='currentColor' x='-1' y='-1' width='2' height='2'/><rect id='gpPt4' stroke-width='0.222' stroke='currentColor' fill='currentColor' x='-1' y='-1' width='2' height='2'/><circle id='gpPt5' stroke-width='0.222' stroke='currentColor' cx='0' cy='0' r='1'/><use xlink:href='#gpPt5' id='gpPt6' fill='currentColor' stroke='none'/><path id='gpPt7' stroke-width='0.222' stroke='currentColor' d='M0,-1.33 L-1.33,0.67 L1.33,0.67 z'/><use xlink:href='#gpPt7' id='gpPt8' fill='currentColor' stroke='none'/><use xlink:href='#gpPt7' id='gpPt9' stroke='currentColor' transform='rotate(180)'/><use xlink:href='#gpPt9' id='gpPt10' fill='currentColor' stroke='none'/><use xlink:href='#gpPt3' id='gpPt11' stroke='currentColor' transform='rotate(45)'/><use xlink:href='#gpPt11' id='gpPt12' fill='currentColor' stroke='none'/></defs><g style="fill:none; color:white; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter"></g><g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter"><path stroke='black'  d='M71.9,422.4 L80.9,422.4 M575.0,422.4 L566.0,422.4  h0.01'/><g transform="translate(63.6,426.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 1</text></g><path stroke='black'  d='M71.9,371.7 L80.9,371.7 M575.0,371.7 L566.0,371.7  h0.01'/><g transform="translate(63.6,376.2)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 1.5</text></g><path stroke='black'  d='M71.9,321.0 L80.9,321.0 M575.0,321.0 L566.0,321.0  h0.01'/><g transform="translate(63.6,325.5)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 2</text></g><path stroke='black'  d='M71.9,270.3 L80.9,270.3 M575.0,270.3 L566.0,270.3  h0.01'/><g transform="translate(63.6,274.8)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 2.5</text></g><path stroke='black'  d='M71.9,219.5 L80.9,219.5 M575.0,219.5 L566.0,219.5  h0.01'/><g transform="translate(63.6,224.0)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 3</text></g><path stroke='black'  d='M71.9,168.8 L80.9,168.8 M575.0,168.8 L566.0,168.8  h0.01'/><g transform="translate(63.6,173.3)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 3.5</text></g><path stroke='black'  d='M71.9,118.1 L80.9,118.1 M575.0,118.1 L566.0,118.1  h0.01'/><g transform="translate(63.6,122.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 4</text></g><path stroke='black'  d='M71.9,67.4 L80.9,67.4 M575.0,67.4 L566.0,67.4  h0.01'/><g transform="translate(63.6,71.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 4.5</text></g><path stroke='black'  d='M71.9,16.7 L80.9,16.7 M575.0,16.7 L566.0,16.7  h0.01'/><g transform="translate(63.6,21.2)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 5</text></g><path stroke='black'  d='M71.9,422.4 L71.9,413.4 M71.9,16.7 L71.9,25.7  h0.01'/><g transform="translate(71.9,444.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 1</text></g><path stroke='black'  d='M134.8,422.4 L134.8,413.4 M134.8,16.7 L134.8,25.7  h0.01'/><g transform="translate(134.8,444.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 1.5</text></g><path stroke='black'  d='M197.7,422.4 L197.7,413.4 M197.7,16.7 L197.7,25.7  h0.01'/><g transform="translate(197.7,444.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 2</text></g><path stroke='black'  d='M260.6,422.4 L260.6,413.4 M260.6,16.7 L260.6,25.7  h0.01'/><g transform="translate(260.6,444.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 2.5</text></g><path stroke='black'  d='M323.5,422.4 L323.5,413.4 M323.5,16.7 L323.5,25.7  h0.01'/><g transform="translate(323.5,444.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 3</text></g><path stroke='black'  d='M386.3,422.4 L386.3,413.4 M386.3,16.7 L386.3,25.7  h0.01'/><g transform="translate(386.3,444.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 3.5</text></g><path stroke='black'  d='M449.2,422.4 L449.2,413.4 M449.2,16.7 L449.2,25.7  h0.01'/><g transform="translate(449.2,444.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 4</text></g><path stroke='black'  d='M512.1,422.4 L512.1,413.4 M512.1,16.7 L512.1,25.7  h0.01'/><g transform="translate(512.1,444.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 4.5</text></g><path stroke='black'  d='M575.0,422.4 L575.0,413.4 M575.0,16.7 L575.0,25.7  h0.01'/><g transform="translate(575.0,444.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 5</text></g><path stroke='black'  d='M71.9,16.7 L71.9,422.4 L575.0,422.4 L575.0,16.7 L71.9,16.7 Z  h0.01'/><g transform="translate(17.6,219.6) rotate(270)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text>y</text></g><g transform="translate(323.4,471.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text>x</text></g></g><g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title><g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter"><g transform="translate(507.9,39.2)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text></text></g><use xlink:href='#gpPt0' transform='translate(71.9,422.4) scale(4.50)'/><use xlink:href='#gpPt0' transform='translate(197.7,321.0) scale(4.50)'/><use xlink:href='#gpPt0' transform='translate(323.5,219.5) scale(4.50)'/><use xlink:href='#gpPt0' transform='translate(449.2,118.1) scale(4.50)'/><use xlink:href='#gpPt0' transform='translate(575.0,16.7) scale(4.50)'/><use xlink:href='#gpPt0' transform='translate(537.3,34.7) scale(4.50)'/></g></g><g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter"><path stroke='black'  d='M71.9,16.7 L71.9,422.4 L575.0,422.4 L575.0,16.7 L71.9,16.7 Z  h0.01'/></g></g></svg>
+
+<br/><br/>
+<h3>
+<a class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>
+Plots for any medium
+</h3>
+
+<p>Plotpg can turn result sets into plots in a variety of formats: <strong>svg</strong> for the web, <strong>png</strong> for whatever, or <strong>ascii</strong> for psql.</p>
+
+<pre><code>=# select plot('select x, y from data');
+
+     5 ++--+---+--+---+---+---+--+--+A+
+       +                             ++
+   4.5 ++                           +++
+     4 ++                     A     +++
+       |                             |+
+   3.5 ++                           +++
+       |                             |+
+     3 ++             A             +++
+       |                             |+
+   2.5 ++                           +++
+     2 ++      A                    +++
+       |                             |+
+   1.5 ++                           +++
+       +                             ++
+     1 A+--+---+--+---+---+---+--+--+++
+       1  1.5  2 2.5  3  3.5  4 4.5  5
+                      x               
+</code></pre>
+<br/><br/>
+
+<h3>
+<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Under the hood</h3>
+
+<p>plotpg is an experiment: a mix of gnuplot and a postgresql.  When a query is passed to the plot function, it is evaluated and passed to gnuplot.  As a result, the resulting plot can be modified with standard gnuplot commands.  The provided plot function accepts an optional second parameter of gnuplot commands.</p>
+
+<pre><code> =# select plot('select x, y from data', 
+'set style data lines; set title ''foo'';');
+</code></pre>
+
+<svg  width="396" height="316"  viewBox="0 0 396 316" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Gnuplot</title><desc>Produced by GNUPLOT 4.6 patchlevel 4 </desc><g id="gnuplot_canvas"><rect x="0" y="0" width="396" height="316" fill="none"/><defs><circle id='gpDot' r='0.5' stroke-width='0.5'/><path id='gpPt0' stroke-width='0.222' stroke='currentColor' d='M-1,0 h2 M0,-1 v2'/><path id='gpPt1' stroke-width='0.222' stroke='currentColor' d='M-1,-1 L1,1 M1,-1 L-1,1'/><path id='gpPt2' stroke-width='0.222' stroke='currentColor' d='M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1'/><rect id='gpPt3' stroke-width='0.222' stroke='currentColor' x='-1' y='-1' width='2' height='2'/><rect id='gpPt4' stroke-width='0.222' stroke='currentColor' fill='currentColor' x='-1' y='-1' width='2' height='2'/><circle id='gpPt5' stroke-width='0.222' stroke='currentColor' cx='0' cy='0' r='1'/><use xlink:href='#gpPt5' id='gpPt6' fill='currentColor' stroke='none'/><path id='gpPt7' stroke-width='0.222' stroke='currentColor' d='M0,-1.33 L-1.33,0.67 L1.33,0.67 z'/><use xlink:href='#gpPt7' id='gpPt8' fill='currentColor' stroke='none'/><use xlink:href='#gpPt7' id='gpPt9' stroke='currentColor' transform='rotate(180)'/><use xlink:href='#gpPt9' id='gpPt10' fill='currentColor' stroke='none'/><use xlink:href='#gpPt3' id='gpPt11' stroke='currentColor' transform='rotate(45)'/><use xlink:href='#gpPt11' id='gpPt12' fill='currentColor' stroke='none'/></defs><g style="fill:none; color:white; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter"></g><g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter"><path stroke='black'  d='M71.9,258.4 L80.9,258.4 M371.0,258.4 L362.0,258.4  h0.01'/><g transform="translate(63.6,262.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 1</text></g><path stroke='black'  d='M71.9,232.9 L80.9,232.9 M371.0,232.9 L362.0,232.9  h0.01'/><g transform="translate(63.6,237.4)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 1.5</text></g><path stroke='black'  d='M71.9,207.3 L80.9,207.3 M371.0,207.3 L362.0,207.3  h0.01'/><g transform="translate(63.6,211.8)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 2</text></g><path stroke='black'  d='M71.9,181.8 L80.9,181.8 M371.0,181.8 L362.0,181.8  h0.01'/><g transform="translate(63.6,186.3)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 2.5</text></g><path stroke='black'  d='M71.9,156.2 L80.9,156.2 M371.0,156.2 L362.0,156.2  h0.01'/><g transform="translate(63.6,160.7)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 3</text></g><path stroke='black'  d='M71.9,130.7 L80.9,130.7 M371.0,130.7 L362.0,130.7  h0.01'/><g transform="translate(63.6,135.2)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 3.5</text></g><path stroke='black'  d='M71.9,105.2 L80.9,105.2 M371.0,105.2 L362.0,105.2  h0.01'/><g transform="translate(63.6,109.7)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 4</text></g><path stroke='black'  d='M71.9,79.6 L80.9,79.6 M371.0,79.6 L362.0,79.6  h0.01'/><g transform="translate(63.6,84.1)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 4.5</text></g><path stroke='black'  d='M71.9,54.1 L80.9,54.1 M371.0,54.1 L362.0,54.1  h0.01'/><g transform="translate(63.6,58.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text> 5</text></g><path stroke='black'  d='M71.9,258.4 L71.9,249.4 M71.9,54.1 L71.9,63.1  h0.01'/><g transform="translate(71.9,280.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 1</text></g><path stroke='black'  d='M109.3,258.4 L109.3,249.4 M109.3,54.1 L109.3,63.1  h0.01'/><g transform="translate(109.3,280.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 1.5</text></g><path stroke='black'  d='M146.7,258.4 L146.7,249.4 M146.7,54.1 L146.7,63.1  h0.01'/><g transform="translate(146.7,280.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 2</text></g><path stroke='black'  d='M184.1,258.4 L184.1,249.4 M184.1,54.1 L184.1,63.1  h0.01'/><g transform="translate(184.1,280.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 2.5</text></g><path stroke='black'  d='M221.5,258.4 L221.5,249.4 M221.5,54.1 L221.5,63.1  h0.01'/><g transform="translate(221.5,280.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 3</text></g><path stroke='black'  d='M258.8,258.4 L258.8,249.4 M258.8,54.1 L258.8,63.1  h0.01'/><g transform="translate(258.8,280.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 3.5</text></g><path stroke='black'  d='M296.2,258.4 L296.2,249.4 M296.2,54.1 L296.2,63.1  h0.01'/><g transform="translate(296.2,280.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 4</text></g><path stroke='black'  d='M333.6,258.4 L333.6,249.4 M333.6,54.1 L333.6,63.1  h0.01'/><g transform="translate(333.6,280.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 4.5</text></g><path stroke='black'  d='M371.0,258.4 L371.0,249.4 M371.0,54.1 L371.0,63.1  h0.01'/><g transform="translate(371.0,280.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text> 5</text></g><path stroke='black'  d='M71.9,54.1 L71.9,258.4 L371.0,258.4 L371.0,54.1 L71.9,54.1 Z  h0.01'/><g transform="translate(17.6,156.3) rotate(270)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text>y</text></g><g transform="translate(221.4,307.9)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text>x</text></g><g transform="translate(221.4,31.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:middle"><text>foo</text></g></g><g id="gnuplot_plot_1" ><title>gnuplot_plot_1</title><g style="fill:none; color:red; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter"><g transform="translate(303.9,76.6)" style="stroke:none; fill:black; font-family:Arial; font-size:12.00pt; text-anchor:end"><text>y</text></g><path  d='M312.2,72.1 L354.4,72.1 M71.9,258.4 L146.7,207.3 L221.5,156.2 L296.2,105.2 L371.0,54.1  h0.01'/></g></g><g style="fill:none; color:black; stroke:currentColor; stroke-width:1.00; stroke-linecap:butt; stroke-linejoin:miter"><path stroke='black'  d='M71.9,54.1 L71.9,258.4 L371.0,258.4 L371.0,54.1 L71.9,54.1 Z  h0.01'/></g></g></svg>
+
+
+<h3>Installation</h3>
+
+<p>Plotpg is installed like a typical extension.</p>
+
+<pre><code>
+git clone git@github.com:no0p/plotpg.git
+cd plotpg
+make
+sudo make install
+psql -c 'create extension plotpg;'
+</code></pre>
+
+<p>Plotpg is available under the same license as Postgresql.</p>      
+      
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/no0p">no0p</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
