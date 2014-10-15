@@ -1,8 +1,8 @@
 ## Introduction
 
-Plotpg is an experiment to generate charts from postgresql result sets.
+Plotpg is an open source experiment to generate charts from postgresql result sets.
 
-The <a href="http://no0p.github.io/plotpg/">plotpg project page</a> provides a *demo* and an introduction to *basic usage*.
+The <a href="http://no0p.github.io/plotpg/">plotpg project page</a> provides a *demo* of basic features.
 
 More technical details and examples are available in the <a href="https://github.com/no0p/plotpg/wiki">project wiki</a>.
 
