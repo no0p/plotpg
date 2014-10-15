@@ -122,9 +122,9 @@ Datum plot(PG_FUNCTION_ARGS) {
 	switch (plot_type) {
 		case GNUPLOT_TIMESERIES :
 			appendStringInfo(&plot_statement, "plot '%s' using 1", data_filename.data);	
-			for(j = 3; j <= natts; j++) {		
+			for(j = 2; j <= natts; j++) {		
 				if (is_ordinal(SPI_gettype(coltuptable->tupdesc, j)))
-					appendStringInfo(&plot_statement, ":%d", j);
+					appendStringInfo(&plot_statement, ":%d", j + 1);
 			}
 			break;
 		case GNUPLOT_HORIZ_BAR :
