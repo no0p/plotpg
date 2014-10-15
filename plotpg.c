@@ -222,6 +222,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 			appendStringInfoString(&gnuplot_script_buf, "set xtics rotate by -45 offset -1;");
 			appendStringInfoString(&gnuplot_script_buf, "set xtics nomirror;");
 			appendStringInfoString(&gnuplot_script_buf, "set ytics nomirror;");
+			appendStringInfoString(&gnuplot_script_buf, "set style data lines;");
 			break;
 		case GNUPLOT_HISTOGRAM :
 			appendStringInfoString(&gnuplot_script_buf, "set style data histogram;");
