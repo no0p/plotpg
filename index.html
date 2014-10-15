@@ -63,11 +63,14 @@
 
         <hr class="featurette-divider">
 
+
+
         <!-- Second Featurette -->
         <div class="featurette" id="services">
         <h2 class="featurette-heading">Or plot directly
             <span class="text-muted">in psql.</span>
         </h2>
+        <br/>
         
 				<pre><code>
 =# select plot('select x, y from data', 'set style data lines;');
@@ -107,11 +110,11 @@
 
         <!-- Third Featurette -->
         <div class="featurette" id="contact">
-            <img class="featurette-image img-circle img-responsive pull-right" src="http://placehold.it/500x500">
-            <h2 class="featurette-heading">The Third Heading
-                <span class="text-muted">Will Seal the Deal.</span>
+
+            <h2 class="featurette-heading">Time Series
             </h2>
-            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+             <p class="lead">When first_column::timestamp</p>
+            <img class="featurette-image" src="images/chart_tx_sec_white_background.png">
         </div>
 
         <hr class="featurette-divider">
@@ -120,9 +123,19 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                  <a class="subheader_link" href="https://github.com/no0p/plotpg">Source Code</a>&nbsp;&nbsp;&nbsp;&nbsp;
-               	  <a class="subheader_link" href="https://github.com/no0p/plotpg/wiki">Documentation</a>
-               	  <a class="subheader_link" href="https://github.com/no0p/plotpg/wiki">Postgresql License</a>
+                	<table class="link_table">
+                	  <tr>
+                	    <td class="first">
+						            <a class="subheader_link" href="https://github.com/no0p/plotpg">Source Code</a>
+						          </td>
+						          <td>
+						         	  <a class="subheader_link" href="https://github.com/no0p/plotpg/wiki">Documentation</a>
+						         	</td>
+						         	<td>
+						         	  <a class="subheader_link" href="https://github.com/no0p/plotpg/blob/master/LICENSE">Postgresql License</a>
+						         	</td>
+						        </tr>
+						      </table>
                 </div>
             </div>
         </footer>

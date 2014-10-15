@@ -12,6 +12,14 @@ pre code {
 	font-size: 13pt;
 }
 
+table.link_table td.first {
+	padding-left: 0px;
+}
+
+table.link_table td {
+	padding-left: 40px;
+}
+
 .container {
 	margin-top: -25px;
 }
