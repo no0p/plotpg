@@ -84,7 +84,7 @@ Datum gnuplot(PG_FUNCTION_ARGS) {
 	f = fopen(output_filename.data, "rb");
 	i = 0;
 	while(fgets(line, 80, f) != NULL) {
-  	if ((strcmp(gnuplot_terminal, "dumb") != 0) || i > 0) {
+  	if ((strstr(gnuplot_terminal, "dumb") != gnuplot_terminal) || i > 0) {
 			appendStringInfoString(&resultbuf, line);
 		}
 		i++;

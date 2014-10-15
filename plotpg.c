@@ -296,7 +296,7 @@ Datum plot(PG_FUNCTION_ARGS) {
 	i = 0;
 	while(fgets(line, 80, f) != NULL) {
   	// skip first line which has a bogus character in dumb mode
-		if ((strcmp(gnuplot_terminal, "dumb") != 0) || i > 0) {
+		if ((strstr(gnuplot_terminal, "dumb") != gnuplot_terminal) || i > 0) {
 			appendStringInfoString(&resultbuf, line);
 		}
 		
